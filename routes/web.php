@@ -13,11 +13,11 @@
 
 Route::group(['middleware'=>'rbac'], function () use($router) {
     //框架
-    $router->get('/','Admin\IndexController@index');
+    $router->get('/admin','Admin\IndexController@index');
     //控制台
     $router->get('/console','Admin\IndexController@console');
     //403无访问权限
-    $router->get('/403','Admin\IndexController@noPermission');
+    $router->get('/admin/403','Admin\IndexController@noPermission');
     $router->group(['prefix' => 'admin'], function () use($router) {
         //菜单管理
         $router->get('/menu/list', 'Admin\AdministratorController@menuList');
@@ -49,13 +49,13 @@ Route::group(['middleware'=>'rbac'], function () use($router) {
         $router->post('/wangeditor/upload','Admin\IndexController@wangeditorUpload');
     });
     //修改个人信息
-    $router->any('/edit/info/{id}','Admin\AdministratorController@editInfo');
+    $router->any('/admin/edit/info/{id}','Admin\AdministratorController@editInfo');
     //退出登录
-    $router->get('/logout','Admin\AdministratorController@logout');
+    $router->get('/admin/logout','Admin\AdministratorController@logout');
 
 });
-$router->any('/login','Admin\AdministratorController@login');
-$router->get('/icon', function(){
+$router->any('/admin/login','Admin\AdministratorController@login');
+$router->get('/admin/icon', function(){
     return view('admin.icon');
 });
 

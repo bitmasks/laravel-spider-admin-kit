@@ -24,7 +24,7 @@
                                     <label for="exampleInputEmail3">菜单图标</label>
                                     <input type="text"  class="form-control" name="icon" placeholder="菜单图标对应class值,二级菜单留空即可" value="{{ $res->icon }}">
                                     <p class="card-description">
-                                        点击查看<a href="/icon" target="_blank">图标库</a>
+                                        点击查看<a href="/admin/icon" target="_blank">图标库</a>
                                     </p>
                                 </div>
                                 <div class="form-group">

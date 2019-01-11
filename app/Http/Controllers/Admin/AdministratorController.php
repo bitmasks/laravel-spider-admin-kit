@@ -467,7 +467,7 @@ class AdministratorController extends Controller
                 return $this->json(500,'请输入密码!');
             }
             $admin = DB::table('admin_user')->where('account', $post['account'])->first();
-            file_put_contents( storage_path('app/debug.txt')  ,  date('Y-m-d H:i：s').print_r($admin ,true) );
+            /*file_put_contents( storage_path('app/debug.txt')  ,  date('Y-m-d H:i：s').print_r($admin ,true) );*/
             if(empty($admin)){
                 return $this->json(500,'账号不存在!');
             }

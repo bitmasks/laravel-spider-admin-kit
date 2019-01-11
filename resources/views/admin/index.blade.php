@@ -29,8 +29,8 @@
   <!-- partial:partials/_navbar.html -->
   <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
     <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-      <a class="navbar-brand brand-logo" href="/"><img src="{{ getConfig("admin_logo") }}" alt="logo"/></a>
-      <a class="navbar-brand brand-logo-mini" href="/"><img src="/assets/images/logo-mini.svg" alt="logo"/></a>
+      <a class="navbar-brand brand-logo" href="/admin"><img src="{{ getConfig("admin_logo") }}" alt="logo"/></a>
+      <a class="navbar-brand brand-logo-mini" href="/admin"><img src="/assets/images/logo-mini.svg" alt="logo"/></a>
     </div>
     <div class="navbar-menu-wrapper d-flex align-items-stretch">
       <div class="search-field d-none d-md-block">
@@ -60,7 +60,7 @@
               修改信息
             </a>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="/logout">
+            <a class="dropdown-item" href="/admin/logout">
               <i class="mdi mdi-logout mr-2 text-primary"></i>
               退出登录
             </a>
@@ -168,7 +168,7 @@
         </li>
 
         <li class="nav-item">
-          <a class="nav-link" href="/">
+          <a class="nav-link" href="/admin">
             <span class="menu-title">控制台</span>
             <i class="mdi mdi-home menu-icon"></i>
           </a>
@@ -262,7 +262,7 @@
            shadeClose: true,
            shade: 0.8,
            area: ['70%', '90%'],
-           content: '/edit/info/'+id
+           content: '/admin/edit/info/'+id
        });
    }
 </script>

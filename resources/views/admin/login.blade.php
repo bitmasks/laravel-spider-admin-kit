@@ -73,11 +73,11 @@
             'account':account,
             'password':password,
         };
-        myRequest("/login","post",data,function(res){
+        myRequest("/admin/login","post",data,function(res){
             if(res.code == '200'){
                 layer.msg(res.msg)
                 setTimeout(function(){
-                    window.location.href="/";
+                    window.location.href="/admin";
                 },1500)
             }else{
                 layer.msg(res.msg)

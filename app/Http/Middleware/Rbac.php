@@ -16,7 +16,7 @@ class Rbac{
     {
         //先判断是否登录
         if(!$request->session()->has('admin')) {
-            return redirect('/login');
+            return redirect('/admin/login');
         }
         $session = $request->session()->get('admin');
         if($session->id == 1){
