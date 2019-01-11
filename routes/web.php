@@ -11,14 +11,23 @@
 |
 */
 
-Route::group(['middleware'=>'rbac'], function () use($router) {
+//首页
+$router->get('/', 'Front\IndexController@index');
+
+
+Route::group(['middleware' => 'rbac'], function () use ($router) {
+
     //框架
-    $router->get('/admin','Admin\IndexController@index');
+    $router->get('/admin', 'Admin\IndexController@index');
     //控制台
-    $router->get('/console','Admin\IndexController@console');
+    $router->get('/console', 'Admin\IndexController@console');
+    //登录
+    $router->any('/admin/login', 'Admin\AdministratorController@login');
     //403无访问权限
-    $router->get('/admin/403','Admin\IndexController@noPermission');
-    $router->group(['prefix' => 'admin'], function () use($router) {
+    $router->get('/403', 'Admin\IndexController@noPermission');
+
+    $router->group(['prefix' => 'admin'], function () use ($router) {
+
         //菜单管理
         $router->get('/menu/list', 'Admin\AdministratorController@menuList');
         $router->any('/menu/add', 'Admin\AdministratorController@menuAdd');
@@ -30,32 +39,48 @@ Route::group(['middleware'=>'rbac'], function () use($router) {
         $router->any('/role/update/{id}', 'Admin\AdministratorController@roleUpdate');
         $router->post('/role/del/{id}', 'Admin\AdministratorController@roleDel');
         //权限管理
-        $router->get('/permission/list','Admin\AdministratorController@permissionList');
-        $router->any('/permission/add','Admin\AdministratorController@permissionAdd');
-        $router->any('/permission/update/{id}','Admin\AdministratorController@permissionUpdate');
-        $router->post('/permission/del/{id}','Admin\AdministratorController@permissionDel');
+        $router->get('/permission/list', 'Admin\AdministratorController@permissionList');
+        $router->any('/permission/add', 'Admin\AdministratorController@permissionAdd');
+        $router->any('/permission/update/{id}', 'Admin\AdministratorController@permissionUpdate');
+        $router->post('/permission/del/{id}', 'Admin\AdministratorController@permissionDel');
         //管理员管理
-        $router->get('/administrator/list','Admin\AdministratorController@administratorList');
-        $router->any('/administrator/add','Admin\AdministratorController@administratorAdd');
-        $router->any('/administrator/update/{id}','Admin\AdministratorController@administratorUpdate');
-        $router->post('/administrator/del/{id}','Admin\AdministratorController@administratorDel');
+        $router->get('/administrator/list', 'Admin\AdministratorController@administratorList');
+        $router->any('/administrator/add', 'Admin\AdministratorController@administratorAdd');
+        $router->any('/administrator/update/{id}', 'Admin\AdministratorController@administratorUpdate');
+        $router->post('/administrator/del/{id}', 'Admin\AdministratorController@administratorDel');
         //配置管理
-        $router->get('/config/list','Admin\ConfigController@configList');
-        $router->any('/config/add','Admin\ConfigController@configAdd');
-        $router->any('/config/update/{id}','Admin\ConfigController@configUpdate');
-        $router->post('/config/del/{id}','Admin\ConfigController@configDel');
+        $router->get('/config/list', 'Admin\ConfigController@configList');
+        $router->any('/config/add', 'Admin\ConfigController@configAdd');
+        $router->any('/config/update/{id}', 'Admin\ConfigController@configUpdate');
+        $router->post('/config/del/{id}', 'Admin\ConfigController@configDel');
         //图片上传
-        $router->post('/upload','Admin\IndexController@upload');
-        $router->post('/wangeditor/upload','Admin\IndexController@wangeditorUpload');
+        $router->post('/upload', 'Admin\IndexController@upload');
+        $router->post('/wangeditor/upload', 'Admin\IndexController@wangeditorUpload');
+
+        //内容-分类管理
+        $router->get('/cms/category/list', 'Admin\CmsController@categoryList');
+        $router->any('/cms/category/add', 'Admin\CmsController@categoryAdd');
+        $router->any('/cms/category/update/{id}', 'Admin\CmsController@categoryUpdate');
+        $router->post('/cms/category/del/{id}', 'Admin\CmsController@categoryDel');
+        //内容-文章管理
+        $router->get('/cms/article/list', 'Admin\CmsController@articleList');
+        $router->any('/cms/article/add', 'Admin\CmsController@articleAdd');
+        $router->any('/cms/article/update/{id}', 'Admin\CmsController@articleUpdate');
+        $router->post('/cms/article/del/{id}', 'Admin\CmsController@articleDel');
+
+        //修改个人信息
+        $router->any('/edit/info/{id}', 'Admin\AdministratorController@editInfo');
+
+        //退出登录
+        $router->get('/logout', 'Admin\AdministratorController@logout');
+
     });
-    //修改个人信息
-    $router->any('/admin/edit/info/{id}','Admin\AdministratorController@editInfo');
-    //退出登录
-    $router->get('/admin/logout','Admin\AdministratorController@logout');
+
 
 });
-$router->any('/admin/login','Admin\AdministratorController@login');
-$router->get('/admin/icon', function(){
+
+
+$router->get('/admin/icon', function () {
     return view('admin.icon');
 });
 
