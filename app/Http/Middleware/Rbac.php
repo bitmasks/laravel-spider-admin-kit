@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware;
 use Closure;
-use DB;
+use \Illuminate\Support\Facades\DB ;
 class Rbac{
     /**
      * Handle an incoming request.

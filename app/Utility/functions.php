@@ -1,9 +1,9 @@
 <?php
 function validateURL($URL) {
     $pattern = "/^(?:([A-Za-z]+):)?(\/{0,3})([0-9.\-A-Za-z]+)(?::(\d+))?(?:\/([^?#]*))?(?:\?([^#]*))?(?:#(.*))?$/";
-    if(preg_match($pattern, $URL)){
+    if (preg_match($pattern, $URL)) {
         return true;
-    } else{
+    } else {
         return false;
     }
 }
@@ -14,25 +14,37 @@ function validateURL($URL) {
  * @param $key
  * @return array
  */
-function getConfig($key)
-{
-    if(is_array($key)){
-        $res = \Illuminate\Support\Facades\DB::table('admin_config')->whereIn('config_key','\''.$key.'\'')->get();
+function getConfig($key) {
+    if (is_array($key)) {
+        $res = \Illuminate\Support\Facades\DB::table('admin_config')->whereIn('config_key', $key)->get();
         $data = [];
-        if($res){
-            foreach ($res as $v){
+        if ($res) {
+            foreach ($res as $v) {
                 $data[$v->config_key] = $v->config_value;
             }
         }
         return $data;
-    }else{
-        $res = \Illuminate\Support\Facades\DB::table('admin_config')->where('config_key','=', $key )->first();
+    } else {
+        $res = \Illuminate\Support\Facades\DB::table('admin_config')->where('config_key', '=', $key)->first();
 
-       /*file_put_contents( storage_path('app/debug.txt')  ,  date('Y - m -d H：i：s').print_r($res ,true) );*/
+        /* file_put_contents( storage_path('app/debug.txt')  ,  date('Y - m -d H：i：s').print_r($res ,true) );*/
 
-        if(!$res){
+        if (!$res) {
             return null;
         }
         return $res->config_value;
     }
+}
+
+
+/**
+ * 对象转数组
+ * @param $obj
+ * @return mixed
+ */
+function asArray($obj) {
+    if (is_object($obj)) {
+        return json_decode(json_encode($obj, true));
+    }
+    return $obj;
 }

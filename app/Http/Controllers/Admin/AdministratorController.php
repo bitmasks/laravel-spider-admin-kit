@@ -518,7 +518,7 @@ class AdministratorController extends Controller
      */
     public function logout(Request $request){
         $request->session()->flush();
-        return redirect('/login');
+        return redirect('/admin/login');
     }
 
 }

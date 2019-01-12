@@ -15,14 +15,18 @@
 $router->get('/', 'Front\IndexController@index');
 
 
+
+//登录
+$router->any('/admin/login', 'Admin\AdministratorController@login');
+
+
 Route::group(['middleware' => 'rbac'], function () use ($router) {
 
     //框架
     $router->get('/admin', 'Admin\IndexController@index');
     //控制台
     $router->get('/console', 'Admin\IndexController@console');
-    //登录
-    $router->any('/admin/login', 'Admin\AdministratorController@login');
+
     //403无访问权限
     $router->get('/403', 'Admin\IndexController@noPermission');
 
@@ -74,14 +78,14 @@ Route::group(['middleware' => 'rbac'], function () use ($router) {
         //退出登录
         $router->get('/logout', 'Admin\AdministratorController@logout');
 
+
+        $router->get('/icon', function () {
+            return view('admin.icon');
+        });
+
     });
 
 
-});
-
-
-$router->get('/admin/icon', function () {
-    return view('admin.icon');
 });
 
 
