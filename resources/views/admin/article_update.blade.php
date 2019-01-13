@@ -141,7 +141,7 @@
                 return false;
             }
             var data = $("#form").serializeObject();
-            myRequest("/admin/cms/article/update", "post", data, function (res) {
+            myRequest("/admin/cms/article/update/{{$info->id}}", "post", data, function (res) {
                 layer.msg(res.msg);
                 if (res.code === 200) {
                     setTimeout(function () {

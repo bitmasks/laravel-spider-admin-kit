@@ -130,15 +130,16 @@ class CmsController extends Controller
 
             $pid = $request->input('pid', 0);
             $data["pid"] = $pid;
-            $checkP = DB::table('cms_category')->where('id', '=', $pid)->first();
-            $data["level"] = ($checkP->level) + 1;
-
-
+            $data["level"] = 1;
+            if ($pid) {
+                $checkP = DB::table('cms_category')->where('id', '=', $pid)->first();
+                $data["level"] = ($checkP->level) + 1;
+            }
             $data["icon"] = $request->input('icon', '');
             $data["sort"] = $request->input('sort', 0);
 
             $data["updated_at"] = date("Y-m-d H:i:s");
-            $category_id = DB::table('cms_category')->where('id',$id)->update($data);
+            $category_id = DB::table('cms_category')->where('id', $id)->update($data);
             if (!$category_id) {
                 return $this->json(500, '修改失败');
             }
@@ -278,15 +279,15 @@ class CmsController extends Controller
             $data["created_at"] = date("Y-m-d H:i:s");
             $data["updated_at"] = date("Y-m-d H:i:s");
 
-            $res = DB::table('cms_article')->where('id',$id)->update($data);
+            $res = DB::table('cms_article')->where('id', $id)->update($data);
             if (!$res) {
                 return $this->json(500, "修改失败");
             }
             return $this->json(200, "修改成功");
         } else {
-            $info = DB::table('cms_article')->where('id',$id)->first();
+            $info = DB::table('cms_article')->where('id', $id)->first();
             $c = DB::table('cms_category')->get();
-            return view('admin.article_update', [ 'info'=>$info,'c' => $c]);
+            return view('admin.article_update', ['info' => $info, 'c' => $c]);
         }
     }
 
