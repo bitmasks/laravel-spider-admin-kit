@@ -68,6 +68,12 @@
                                 @endforeach
                                 </tbody>
                             </table>
+
+                            <div style="margin-top: 20px;">
+                                {{ $list->links() }}
+                            </div>
+
+
                         </div>
                     </div>
                 </div>

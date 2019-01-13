@@ -163,6 +163,8 @@ return [
 
         Barryvdh\Debugbar\ServiceProvider::class,
 
+        \Summerblue\Generator\GeneratorsServiceProvider::class,
+
     ],
 
     /*

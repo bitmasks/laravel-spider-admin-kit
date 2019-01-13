@@ -20,8 +20,10 @@ class CmsController extends Controller
      */
     public function categoryList() {
 
+        $count  =   DB::table('cms_category')->count();
         $list = DB::table('cms_category')
             ->orderBy('sort', 'DESC')
+            ->limit($count)
             ->get();
 
         $list = asArray($list);
@@ -186,8 +188,12 @@ class CmsController extends Controller
      * 文章列表
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function articleList() {
-        $list = DB::table('cms_article')->orderBy('sort', 'DESC')->paginate(10);
+    public function articleList(Request $request) {
+
+        $per = $request->get('per' , 10);
+        $list = DB::table('cms_article')
+            ->orderBy('sort', 'DESC')
+            ->paginate($per);
         return view('admin.article', ['list' => $list]);
     }
 

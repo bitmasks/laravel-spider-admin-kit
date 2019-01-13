@@ -54,7 +54,8 @@
                                                     onclick="upload($(this))" type="button">上传</button>
                                         </span>
                                     </div>
-                                    <div class="img-yl">
+                                    <div class="img-yl" @if($info->cover) style="display: block" @endif>
+                                        @if($info->cover)<img src="{{ $info->cover  }}"> @endif
                                     </div>
                                 </div>
 

@@ -39,6 +39,7 @@ class IndexController extends Controller
     }
 
     public function console() {
+        $article = DB::table('cms_article')->count();
         return view('admin.console');
     }
 

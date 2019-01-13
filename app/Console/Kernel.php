@@ -13,7 +13,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        //\App\Console\Commands\Inspire::class,
+        '\App\Console\Commands\Stat_Test',
     ];
 
     /**
@@ -26,6 +27,9 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
+
+        //  为测试方便 每分钟执行一次
+        $schedule->command('stat:test')->everyMinute();
     }
 
     /**
