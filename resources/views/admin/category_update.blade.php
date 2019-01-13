@@ -12,6 +12,9 @@
                             {{--Basic form elements--}}
                             {{--</p>--}}
                             <form class="forms-sample" id="form">
+
+                                <input type="hidden" name="id" value="{{ $info->id  }}">
+
                                 <div class="form-group">
                                     <label>* 名称</label>
                                     <input type="text" class="form-control required" name="name"

@@ -32,14 +32,12 @@
                             <table class="table table-bordered">
                                 <thead>
                                 <tr>
-                                    <th>编号</th>
+                                    <th width="80">编号</th>
                                     <th>标题</th>
-                                    <th>封面图</th>
-                                    <th>简介</th>
-                                    <th>作者</th>
-                                    <th>创建时间</th>
-                                    <th>更新时间</th>
-                                    <th>操作</th>
+                                    <th width="140">封面图</th>
+                                    <th width="120">创建时间</th>
+                                    <th width="120">更新时间</th>
+                                    <th width="200">操作</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -47,9 +45,10 @@
                                     <tr>
                                         <td>{{ $v->id }}</td>
                                         <td>{{ $v->title }}</td>
-                                        <td>{{ $v->cover }}</td>
-                                        <td>{{ $v->desc }}</td>
-                                        <td>{{ $v->author}}</td>
+                                        <td>
+                                            <img src="{{ $v->cover }}"
+                                                 style="width: 100px;height: 60px;object-fit: cover;">
+                                        </td>
                                         <td>{{ $v->created_at }}</td>
                                         <td>{{ $v->updated_at }}</td>
                                         <td>

@@ -15,7 +15,7 @@ use \Illuminate\Support\Facades\DB;
 class CmsController extends Controller
 {
     /**
-     * 分类列表
+     * 文章分类列表
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function categoryList() {
@@ -34,7 +34,15 @@ class CmsController extends Controller
     }
 
 
-    public function tree(&$collection, $parentId = '0', &$item = null, $name = 'children') {
+    /**
+     * 树状结构获取
+     * @param $collection
+     * @param string $parentId
+     * @param null $item
+     * @param string $name
+     * @return array
+     */
+    private function tree(&$collection, $parentId = '0', &$item = null, $name = 'children') {
 
         $tree = [];
         foreach ($collection as $key => $value) {
@@ -49,15 +57,20 @@ class CmsController extends Controller
     }
 
 
-    public function unset(&$collection, &$value, $key) {
+    /**
+     * 树状结构2
+     * @param $collection
+     * @param $value
+     * @param $key
+     */
+    private function unset(&$collection, &$value, $key) {
         unset($collection[$key]);
         $this->tree($collection, $value['id'], $value);
     }
 
 
     /**
-     * @Desc: 添加
-     * @Author: woann <304550409@qq.com>
+     * @Desc: 分类添加
      * @param Request $request
      * @return \Illuminate\View\View
      */
@@ -75,7 +88,7 @@ class CmsController extends Controller
             $pid = $request->input('pid', 0);
             $data["pid"] = $pid;
             $checkP = DB::table('cms_category')->where('id', '=', $pid)->first();
-            $data["level"] = $checkP->pid+1;
+            $data["level"] = $checkP->pid + 1;
 
             $data["icon"] = $request->input('icon', '');
             $data["sort"] = $request->input('sort', 0);
@@ -97,8 +110,7 @@ class CmsController extends Controller
     }
 
     /**
-     * @Desc: 修改菜单
-     * @Author: woann <304550409@qq.com>
+     * @Desc: 修改分类
      * @param Request $request
      * @param $id
      * @return \Illuminate\View\View
@@ -119,20 +131,18 @@ class CmsController extends Controller
             $pid = $request->input('pid', 0);
             $data["pid"] = $pid;
             $checkP = DB::table('cms_category')->where('id', '=', $pid)->first();
-            $data["level"] = ($checkP->level)+1;
+            $data["level"] = ($checkP->level) + 1;
 
 
             $data["icon"] = $request->input('icon', '');
             $data["sort"] = $request->input('sort', 0);
 
-
-            $data["created_at"] = date("Y-m-d H:i:s");
             $data["updated_at"] = date("Y-m-d H:i:s");
-            $category_id = DB::table('cms_category')->insertGetId($data);
+            $category_id = DB::table('cms_category')->where('id',$id)->update($data);
             if (!$category_id) {
-                return $this->json(500, '添加失败');
+                return $this->json(500, '修改失败');
             }
-            return $this->json(200, '添加成功');
+            return $this->json(200, '修改成功');
 
         } else {
 
@@ -143,8 +153,7 @@ class CmsController extends Controller
     }
 
     /**
-     * @Desc: 删除菜单
-     * @Author: woann <304550409@qq.com>
+     * @Desc: 删除分类
      * @param $id
      * @return mixed
      */
@@ -157,114 +166,138 @@ class CmsController extends Controller
         return $this->json(200, '删除成功');
     }
 
+    /**
+     * 根据最后一级分类获取最顶级分类
+     * @param $cid
+     * @return mixed
+     */
+    private function getCategoryParentId($cid) {
+        $info = DB::table('cms_category')->where('id', '=', $cid)->first();
+
+        if ($info->level == 1) {
+            return $info->id;
+        }
+        return $this->getCategoryParentId($info->pid);
+
+    }
 
     /**
      * 文章列表
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public
-    function articleList() {
+    public function articleList() {
         $list = DB::table('cms_article')->orderBy('sort', 'DESC')->paginate(10);
         return view('admin.article', ['list' => $list]);
     }
 
     /**
-     * @Desc: 添加角色
-     * @Author: woann <304550409@qq.com>
+     * @Desc: 添加文章
      * @param Request $request
      * @return \Illuminate\View\View
      */
     public function articleAdd(Request $request) {
         if ($request->isMethod("POST")) {
             $param = $request->post();
-            $data = [];
-            $data["name"] = $param['name'];
-            $data["des"] = $param['des'];
+
+            if (!isset($param['category_id']) || !$param['category_id']) {
+                return $this->json(500, "所属分类不能为空");
+            }
+
+            if (!isset($param['title']) || !$param['title']) {
+                return $this->json(500, "标题不能为空");
+            }
+
+            $data["category1_id"] = $this->getCategoryParentId($param['category_id']);
+
+            if (!$data["category1_id"]) {
+                return $this->json(500, "所选分类不可用");
+            }
+
+            $data["category2_id"] = $param['category_id'];
+            $data["title"] = $param['title'];
+            $data["cover"] = $request->post('cover', '');
+            $data["desc"] = $request->post('desc', '');
+            $data["author"] = $request->post('author', '');
+            $data["content"] = $request->post('content', '');
+            $data["sort"] = $request->post('sort', 0);
+            $data["advertising"] = $request->post('advertising', '') ? 1 : 0;
+            $data["recommend"] = $request->post('recommend', '') ? 1 : 0;
             $data["created_at"] = date("Y-m-d H:i:s");
             $data["updated_at"] = date("Y-m-d H:i:s");
-            $role_id = DB::table('admin_role')->insertGetId($data);
-            if (!$role_id) {
-                return $this->json(500, "添加失败");
-            }
-            $data = [];
-            foreach ($param["permission"] as $k => $v) {
-                $data[$k]["role_id"] = $role_id;
-                $data[$k]["permission_id"] = $v;
-            }
-            $res = DB::table('admin_role_permission')->insert($data);
+
+            $res = DB::table('cms_article')->insert($data);
             if (!$res) {
-                DB::table('admin_role')->delete($role_id);
                 return $this->json(500, "添加失败");
             }
             return $this->json(200, "添加成功");
         } else {
-            $permission_list = DB::table('admin_permission')->get();
-            return view('admin.role_add', ['permission_list' => $permission_list]);
+            $c = DB::table('cms_category')->get();
+            return view('admin.article_add', ['c' => $c]);
         }
     }
 
+
     /**
-     * @Desc: 修改角色
-     * @Author: woann <304550409@qq.com>
+     * @Desc: 修改文章
      * @param Request $request
      * @param $id
      * @return \Illuminate\View\View
      */
-    public
-    function articleUpdate(Request $request, $id) {
+    public function articleUpdate(Request $request, $id) {
         if ($request->isMethod("POST")) {
             $param = $request->post();
-            $data = [];
-            $data["name"] = $param['name'];
-            $data["des"] = $param['des'];
-            $data["updated_at"] = date("Y-m-d H:i:s");
-            DB::table('admin_role')->where('id', $id)->update($data);
-            $data = [];
-            foreach ($param["permission"] as $k => $v) {
-                $data[$k]["role_id"] = $id;
-                $data[$k]["permission_id"] = $v;
+
+
+            if (!isset($param['id']) || !$param['id']) {
+                return $this->json(500, "参数错误");
             }
-            DB::table('admin_role_permission')->where('role_id', $id)->delete();
-            $res = DB::table('admin_role_permission')->insert($data);
+
+            if (!isset($param['category_id']) || !$param['category_id']) {
+                return $this->json(500, "所属分类不能为空");
+            }
+
+            if (!isset($param['title']) || !$param['title']) {
+                return $this->json(500, "标题不能为空");
+            }
+
+            $data["category1_id"] = $this->getCategoryParentId($param['category_id']);
+
+            if (!$data["category1_id"]) {
+                return $this->json(500, "所选分类不可用");
+            }
+
+            $data["category2_id"] = $param['category_id'];
+            $data["title"] = $param['title'];
+            $data["cover"] = $request->post('cover', '');
+            $data["desc"] = $request->post('desc', '');
+            $data["author"] = $request->post('author', '');
+            $data["content"] = $request->post('content', '');
+            $data["sort"] = $request->post('sort', 0);
+            $data["advertising"] = $request->post('advertising', '') ? 1 : 0;
+            $data["recommend"] = $request->post('recommend', '') ? 1 : 0;
+            $data["created_at"] = date("Y-m-d H:i:s");
+            $data["updated_at"] = date("Y-m-d H:i:s");
+
+            $res = DB::table('cms_article')->where('id',$id)->update($data);
             if (!$res) {
                 return $this->json(500, "修改失败");
             }
             return $this->json(200, "修改成功");
         } else {
-            $res = DB::table('admin_role')->find($id);
-            $my_permission = DB::table('admin_role_permission')->select('permission_id')->where('role_id', $id)->get();
-            $permission_list = DB::table('admin_permission')->get();
-            $my_permission_ids = [];
-            foreach ($my_permission as $k => $v) {
-                $my_permission_ids[] = $v->permission_id;
-            }
-            foreach ($permission_list as $k => $v) {
-                if (in_array($v->id, $my_permission_ids)) {
-                    $permission_list[$k]->checked = true;
-                } else {
-                    $permission_list[$k]->checked = false;
-                }
-            }
-            return view('admin.role_update', ['res' => $res, 'permission_list' => $permission_list]);
+            $info = DB::table('cms_article')->where('id',$id)->first();
+            $c = DB::table('cms_category')->get();
+            return view('admin.article_update', [ 'info'=>$info,'c' => $c]);
         }
     }
 
     /**
-     * @Desc: 删除角色
-     * @Author: woann <304550409@qq.com>
+     * @Desc: 删除文章
      * @param $id
      * @return mixed
      */
     public function articleDel($id) {
-        if ($id == 1) {
-            return $this->json(500, '超级管理员不可删除');
-        }
-        $res = DB::table('admin_role')->delete($id);
+        $res = DB::table('cms_article')->delete($id);
         if (!$res) {
-            //删除该角色和权限的关联
-            DB::table('admin_role_permission')->where('role_id', $id)->delete();
-            //删除角色和管理员的关联
-            DB::table('admin_user_role')->where('role_id', $id)->delete();
             return $this->json(500, '删除失败');
         }
         return $this->json(200, '删除成功');
