@@ -43,8 +43,18 @@ function getConfig($key) {
  * @return mixed
  */
 function asArray($obj) {
+
     if (is_object($obj)) {
-        return json_decode(json_encode($obj, true));
+        $obj = json_decode(json_encode($obj, true));
     }
+
+
+    foreach ($obj as $index=>&$item) {
+        if (is_object($item)) {
+           $item = (array)$item;
+        }
+    }
+
+
     return $obj;
 }

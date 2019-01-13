@@ -29,37 +29,37 @@ class Handler extends ExceptionHandler
     /**
      * Report or log an exception.
      *
-     * @param  \Exception  $exception
+     * @param  \Exception $exception
      * @return void
      */
-    public function report(Exception $exception)
-    {
+    public function report(Exception $exception) {
         parent::report($exception);
     }
 
     /**
      * Render an exception into an HTTP response.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Exception  $exception
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Exception $exception
      * @return \Illuminate\Http\Response
      */
-    public function render($request, Exception $exception)
-    {
+    public function render($request, Exception $exception) {
         $debug = env("APP_DEBUG");
-        if(!$debug){
-            if($request->ajax()){
+        if (!$debug) {
+            if ($request->ajax()) {
                 $message = $exception->getMessage();
                 $line = $exception->getLine();
                 $file = $exception->getFile();
                 $code = $exception->getCode();
-                return response()->json(['code'=>500,'msg'=>'请求发生错误!','data'=>[
-                    'code' => $code,
-                    'line' => $line,
-                    'file' => $file,
+                return response()->json(['code' => 500, 'msg' => '请求发生错误!', 'data' => [
+                    'code'    => $code,
+                    'line'    => $line,
+                    'file'    => $file,
                     'message' => $message,
+                    'html'    => $exception,
+                    'request' => $request,
                 ]]);
-            }else{
+            } else {
                 return response()->view('base.404');
             }
         }

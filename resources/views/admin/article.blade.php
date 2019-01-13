@@ -23,7 +23,8 @@
                         <div class="card-body">
                             <h4 class="card-title">列表</h4>
                             <p class="card-description">
-                                <button type="button" class="btn btn-sm btn-gradient-success btn-icon-text" onclick="add()">
+                                <button type="button" class="btn btn-sm btn-gradient-success btn-icon-text"
+                                        onclick="add()">
                                     <i class="mdi mdi-plus btn-icon-prepend"></i>
                                     添加
                                 </button>
@@ -31,8 +32,11 @@
                             <table class="table table-bordered">
                                 <thead>
                                 <tr>
-                                    <th>名称</th>
-                                    <th>描述</th>
+                                    <th>编号</th>
+                                    <th>标题</th>
+                                    <th>封面图</th>
+                                    <th>简介</th>
+                                    <th>作者</th>
                                     <th>创建时间</th>
                                     <th>更新时间</th>
                                     <th>操作</th>
@@ -41,16 +45,22 @@
                                 <tbody>
                                 @foreach($list as $k=>$v)
                                     <tr>
-                                        <td>{{ $v->name }}</td>
                                         <td>{{ $v->id }}</td>
+                                        <td>{{ $v->title }}</td>
+                                        <td>{{ $v->cover }}</td>
+                                        <td>{{ $v->desc }}</td>
+                                        <td>{{ $v->author}}</td>
                                         <td>{{ $v->created_at }}</td>
                                         <td>{{ $v->updated_at }}</td>
                                         <td>
-                                            <button type="button" class="btn btn-sm btn-gradient-dark btn-icon-text" onclick="update({{ $v->id }})">
+                                            <button type="button" class="btn btn-sm btn-gradient-dark btn-icon-text"
+                                                    onclick="update({{ $v->id }})">
                                                 修改
                                                 <i class="mdi mdi-file-check btn-icon-append"></i>
                                             </button>
-                                            <button @if($v->id == 1) disabled @endif type="button" class="btn btn-sm btn-gradient-danger btn-icon-text" onclick="del({{ $v->id }})">
+                                            <button @if($v->id == 1) disabled @endif type="button"
+                                                    class="btn btn-sm btn-gradient-danger btn-icon-text"
+                                                    onclick="del({{ $v->id }})">
                                                 <i class="mdi mdi-delete btn-icon-prepend"></i>
                                                 删除
                                             </button>
@@ -66,49 +76,51 @@
         </div>
     </div>
     <script>
-        function add(){
+        function add() {
             var page = layer.open({
                 type: 2,
                 title: '添加',
                 shadeClose: true,
                 shade: 0.8,
                 area: ['70%', '90%'],
-                content: '/admin/role/add'
+                content: '/admin/cms/article/add'
             });
         }
-        function update(id){
+
+        function update(id) {
             var page = layer.open({
                 type: 2,
                 title: '修改',
                 shadeClose: true,
                 shade: 0.8,
                 area: ['70%', '90%'],
-                content: '/admin/role/update/'+id
+                content: '/admin/cms/article/update/' + id
             });
         }
-        function del(id){
-            myConfirm("删除操作不可逆,是否继续?",function(){
-                myRequest("/admin/role/del/"+id,"post",{},function(res){
+
+        function del(id) {
+            myConfirm("删除操作不可逆,是否继续?", function () {
+                myRequest("/admin/cms/article/del/" + id, "post", {}, function (res) {
                     layer.msg(res.msg)
-                    setTimeout(function(){
+                    setTimeout(function () {
                         window.location.reload();
-                    },1500)
+                    }, 1500)
                 });
             });
         }
 
-        $('.menu-switch').click(function(){
+        $('.menu-switch').click(function () {
             id = $(this).attr('id');
             state = $(this).attr('state');
             console.log(id)
             console.log(state)
-            if(state == "on"){
-                $('.pid-'+id).hide();
-                $(this).attr("state","off")
+            if (state == "on") {
+                $('.pid-' + id).hide();
+                $(this).attr("state", "off")
                 $(this).removeClass('mdi-menu-down').addClass('mdi-menu-right');
-            }else{
-                $('.pid-'+id).show();
-                $(this).attr("state","on")
+            } else {
+                $('.pid-' + id).show();
+                $(this).attr("state", "on")
                 $(this).removeClass('mdi-menu-right').addClass('mdi-menu-down');
             }
         })

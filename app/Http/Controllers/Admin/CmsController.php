@@ -10,7 +10,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use \Illuminate\Support\Facades\DB ;
+use \Illuminate\Support\Facades\DB;
 
 class CmsController extends Controller
 {
@@ -23,44 +23,76 @@ class CmsController extends Controller
         $list = DB::table('cms_category')
             ->orderBy('sort', 'DESC')
             ->get();
-        return view('admin.category', ['list' => $list]);
+
+        $list = asArray($list);
+
+
+        $list = $this->tree($list);
+
+
+        return view('admin.category', ['list' => json_encode($list, JSON_UNESCAPED_UNICODE)]);
+    }
+
+
+    public function tree(&$collection, $parentId = '0', &$item = null, $name = 'children') {
+
+        $tree = [];
+        foreach ($collection as $key => $value) {
+            if ($value['pid'] == $parentId) {
+
+                $this->unset($collection, $value, $key);
+                if ($item) $item[$name][] = $value;
+                else $tree[] = $value;
+            }
+        };
+        return $tree;
+    }
+
+
+    public function unset(&$collection, &$value, $key) {
+        unset($collection[$key]);
+        $this->tree($collection, $value['id'], $value);
     }
 
 
     /**
-     * @Desc: 添加菜单
+     * @Desc: 添加
      * @Author: woann <304550409@qq.com>
      * @param Request $request
      * @return \Illuminate\View\View
      */
     public function categoryAdd(Request $request) {
         if ($request->isMethod('post')) {
-            $data = $request->except(['role', 's']);
-            $roles = $request->input('role');
-            if (!count($roles)) {
-                return $this->json(500, '未选择任何角色');
+
+            $name = $request->input('name');
+            if (!count($name)) {
+                return $this->json(500, '未输入名称');
             }
+            $data["name"] = $name;
+
+            $data["short_name"] = $request->input('short_name', '');
+
+            $pid = $request->input('pid', 0);
+            $data["pid"] = $pid;
+            $checkP = DB::table('cms_category')->where('id', '=', $pid)->first();
+            $data["level"] = $checkP->pid+1;
+
+            $data["icon"] = $request->input('icon', '');
+            $data["sort"] = $request->input('sort', 0);
+
+
             $data["created_at"] = date("Y-m-d H:i:s");
             $data["updated_at"] = date("Y-m-d H:i:s");
-            $menu_id = DB::table('admin_menu')->insertGetId($data);
-            if (!$menu_id) {
-                return $this->json(500, '添加失败');
-            }
-            $data = [];
-            foreach ($roles as $k => $v) {
-                $data[$k]["menu_id"] = $menu_id;
-                $data[$k]["role_id"] = $v;
-            }
-            $res = DB::table('admin_role_menu')->insert($data);
-            if (!$res) {
-                DB::table('admin_menu')->where('id', $menu_id)->delete();
+            $category_id = DB::table('cms_category')->insertGetId($data);
+            if (!$category_id) {
                 return $this->json(500, '添加失败');
             }
             return $this->json(200, '添加成功');
         } else {
-            $role_list = DB::table('admin_role')->get();
-            $parent_menu = DB::table('admin_menu')->where('pid', 0)->orderBy('sort', 'DESC')->get();
-            return view('admin.menu_add', ['role_list' => $role_list, 'parent_menu' => $parent_menu]);
+
+            $p = DB::table('cms_category')->get();
+
+            return view('admin.category_add', ['p' => $p]);
         }
     }
 
@@ -71,45 +103,42 @@ class CmsController extends Controller
      * @param $id
      * @return \Illuminate\View\View
      */
-    public function categoryUpdate(Request $request, $id) {
-        if ($request->isMethod('post')) {
-            $data = $request->except(['role', 's']);
-            $roles = $request->input('role');
-            if (!count($roles)) {
-                return $this->json(500, '未选择任何角色');
+    public function categoryUpdate(Request $request, $id = 0) {
+
+        if ($request->isMethod("POST")) {
+
+            $name = $request->post('name');
+            if (!count($name)) {
+                return $this->json(500, '未输入名称');
             }
+            $data["name"] = $name;
+
+
+            $data["short_name"] = $request->input('short_name', '');
+
+            $pid = $request->input('pid', 0);
+            $data["pid"] = $pid;
+            $checkP = DB::table('cms_category')->where('id', '=', $pid)->first();
+            $data["level"] = ($checkP->level)+1;
+
+
+            $data["icon"] = $request->input('icon', '');
+            $data["sort"] = $request->input('sort', 0);
+
+
+            $data["created_at"] = date("Y-m-d H:i:s");
             $data["updated_at"] = date("Y-m-d H:i:s");
-            DB::table('admin_menu')->where('id', $id)->update($data);
-            //删除原有关联数据
-            DB::table('admin_role_menu')->where('menu_id', $id)->delete();
-            $data = [];
-            foreach ($roles as $k => $v) {
-                $data[$k]["menu_id"] = $id;
-                $data[$k]["role_id"] = $v;
+            $category_id = DB::table('cms_category')->insertGetId($data);
+            if (!$category_id) {
+                return $this->json(500, '添加失败');
             }
-            //更新关联数据
-            $res = DB::table('admin_role_menu')->insert($data);
-            if (!$res) {
-                return $this->json(500, '修改失败');
-            }
-            return $this->json(200, '修改成功');
+            return $this->json(200, '添加成功');
+
         } else {
-            $role_list = DB::table('admin_role')->get();
-            $my_role = DB::table('admin_role_menu')->where('menu_id', $id)->get();
-            $my_role_ids = [];
-            foreach ($my_role as $k => $v) {
-                $my_role_ids[] = $v->role_id;
-            }
-            foreach ($role_list as $k => $v) {
-                if (in_array($v->id, $my_role_ids)) {
-                    $role_list[$k]->checked = true;
-                } else {
-                    $role_list[$k]->checked = false;
-                }
-            }
-            $parent_menu = DB::table('admin_menu')->where('pid', 0)->orderBy('sort', 'DESC')->get();
-            $res = DB::table('admin_menu')->find($id);
-            return view('admin.menu_update', ['role_list' => $role_list, 'parent_menu' => $parent_menu, 'res' => $res]);
+
+            $info = DB::table('cms_category')->where('id', '=', $id)->first();
+            $p = DB::table('cms_category')->get();
+            return view('admin.category_update', ['info' => $info, 'p' => $p]);
         }
     }
 
@@ -120,18 +149,22 @@ class CmsController extends Controller
      * @return mixed
      */
     public function categoryDel($id) {
-        $res = DB::table('admin_menu')->delete($id);
+        $res = DB::table('cms_category')->delete($id);
         if (!$res) {
             return $this->json(500, '删除失败');
         }
-        DB::table('admin_role_menu')->where('menu_id', $id)->delete();
+        DB::table('cms_category')->where('pid', $id)->delete();
         return $this->json(200, '删除成功');
     }
 
 
-
-    public function articleList() {
-        $list = DB::table('cms_article')->paginate(10);
+    /**
+     * 文章列表
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public
+    function articleList() {
+        $list = DB::table('cms_article')->orderBy('sort', 'DESC')->paginate(10);
         return view('admin.article', ['list' => $list]);
     }
 
@@ -177,7 +210,8 @@ class CmsController extends Controller
      * @param $id
      * @return \Illuminate\View\View
      */
-    public function articleUpdate(Request $request, $id) {
+    public
+    function articleUpdate(Request $request, $id) {
         if ($request->isMethod("POST")) {
             $param = $request->post();
             $data = [];
