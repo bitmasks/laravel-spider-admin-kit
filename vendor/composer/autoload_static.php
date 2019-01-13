@@ -10,8 +10,8 @@ class ComposerStaticInitb6904a2f1710f7bc9f4c84cfd28c9994
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         '25072dd6e2470089de65ae7bf11d3109' => __DIR__ . '/..' . '/symfony/polyfill-php72/bootstrap.php',
         '667aeda72477189d0494fecd327c3641' => __DIR__ . '/..' . '/symfony/var-dumper/Resources/functions/dump.php',
-        '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
+        '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
         'c964ee0ededf28c96ebd9db5099ef910' => __DIR__ . '/..' . '/guzzlehttp/promises/src/functions_include.php',
         'a0edc8309cc5e1d60e3047b5df6b7052' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/functions_include.php',
         '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
@@ -49,6 +49,7 @@ class ComposerStaticInitb6904a2f1710f7bc9f4c84cfd28c9994
         ),
         'W' => 
         array (
+            'Workerman\\' => 10,
             'Whoops\\' => 7,
             'Webmozart\\Assert\\' => 17,
         ),
@@ -153,6 +154,7 @@ class ComposerStaticInitb6904a2f1710f7bc9f4c84cfd28c9994
         'B' => 
         array (
             'BeyondCode\\DumpServer\\' => 22,
+            'Beanbun\\' => 8,
             'Barryvdh\\Debugbar\\' => 18,
         ),
         'A' => 
@@ -175,6 +177,10 @@ class ComposerStaticInitb6904a2f1710f7bc9f4c84cfd28c9994
         'XdgBaseDir\\' => 
         array (
             0 => __DIR__ . '/..' . '/dnoegel/php-xdg-base-dir/src',
+        ),
+        'Workerman\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/workerman/workerman',
         ),
         'Whoops\\' => 
         array (
@@ -389,6 +395,10 @@ class ComposerStaticInitb6904a2f1710f7bc9f4c84cfd28c9994
         array (
             0 => __DIR__ . '/..' . '/beyondcode/laravel-dump-server/src',
         ),
+        'Beanbun\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/kiddyu/beanbun/src',
+        ),
         'Barryvdh\\Debugbar\\' => 
         array (
             0 => __DIR__ . '/..' . '/barryvdh/laravel-debugbar/src',
@@ -490,6 +500,17 @@ class ComposerStaticInitb6904a2f1710f7bc9f4c84cfd28c9994
         'Barryvdh\\Debugbar\\Twig\\Extension\\Stopwatch' => __DIR__ . '/..' . '/barryvdh/laravel-debugbar/src/Twig/Extension/Stopwatch.php',
         'Barryvdh\\Debugbar\\Twig\\Node\\StopwatchNode' => __DIR__ . '/..' . '/barryvdh/laravel-debugbar/src/Twig/Node/StopwatchNode.php',
         'Barryvdh\\Debugbar\\Twig\\TokenParser\\StopwatchTokenParser' => __DIR__ . '/..' . '/barryvdh/laravel-debugbar/src/Twig/TokenParser/StopwatchTokenParser.php',
+        'Beanbun\\Beanbun' => __DIR__ . '/..' . '/kiddyu/beanbun/src/Beanbun.php',
+        'Beanbun\\Exception\\BeanbunException' => __DIR__ . '/..' . '/kiddyu/beanbun/src/Exception/BeanbunException.php',
+        'Beanbun\\Lib\\BloomFilter' => __DIR__ . '/..' . '/kiddyu/beanbun/src/Lib/BloomFilter.php',
+        'Beanbun\\Lib\\Client' => __DIR__ . '/..' . '/kiddyu/beanbun/src/Lib/Client.php',
+        'Beanbun\\Lib\\Db' => __DIR__ . '/..' . '/kiddyu/beanbun/src/Lib/Db.php',
+        'Beanbun\\Lib\\DbConnection' => __DIR__ . '/..' . '/kiddyu/beanbun/src/Lib/DbConnection.php',
+        'Beanbun\\Lib\\Helper' => __DIR__ . '/..' . '/kiddyu/beanbun/src/Lib/Helper.php',
+        'Beanbun\\Lib\\Server' => __DIR__ . '/..' . '/kiddyu/beanbun/src/Lib/Server.php',
+        'Beanbun\\Queue\\MemoryQueue' => __DIR__ . '/..' . '/kiddyu/beanbun/src/Queue/MemoryQueue.php',
+        'Beanbun\\Queue\\QueueInterface' => __DIR__ . '/..' . '/kiddyu/beanbun/src/Queue/QueueInterface.php',
+        'Beanbun\\Queue\\RedisQueue' => __DIR__ . '/..' . '/kiddyu/beanbun/src/Queue/RedisQueue.php',
         'BeyondCode\\DumpServer\\DumpServerCommand' => __DIR__ . '/..' . '/beyondcode/laravel-dump-server/src/DumpServerCommand.php',
         'BeyondCode\\DumpServer\\DumpServerServiceProvider' => __DIR__ . '/..' . '/beyondcode/laravel-dump-server/src/DumpServerServiceProvider.php',
         'BeyondCode\\DumpServer\\Dumper' => __DIR__ . '/..' . '/beyondcode/laravel-dump-server/src/Dumper.php',
@@ -4151,6 +4172,32 @@ class ComposerStaticInitb6904a2f1710f7bc9f4c84cfd28c9994
         'Whoops\\Util\\Misc' => __DIR__ . '/..' . '/filp/whoops/src/Whoops/Util/Misc.php',
         'Whoops\\Util\\SystemFacade' => __DIR__ . '/..' . '/filp/whoops/src/Whoops/Util/SystemFacade.php',
         'Whoops\\Util\\TemplateHelper' => __DIR__ . '/..' . '/filp/whoops/src/Whoops/Util/TemplateHelper.php',
+        'Workerman\\Autoloader' => __DIR__ . '/..' . '/workerman/workerman/Autoloader.php',
+        'Workerman\\Connection\\AsyncTcpConnection' => __DIR__ . '/..' . '/workerman/workerman/Connection/AsyncTcpConnection.php',
+        'Workerman\\Connection\\AsyncUdpConnection' => __DIR__ . '/..' . '/workerman/workerman/Connection/AsyncUdpConnection.php',
+        'Workerman\\Connection\\ConnectionInterface' => __DIR__ . '/..' . '/workerman/workerman/Connection/ConnectionInterface.php',
+        'Workerman\\Connection\\TcpConnection' => __DIR__ . '/..' . '/workerman/workerman/Connection/TcpConnection.php',
+        'Workerman\\Connection\\UdpConnection' => __DIR__ . '/..' . '/workerman/workerman/Connection/UdpConnection.php',
+        'Workerman\\Events\\Ev' => __DIR__ . '/..' . '/workerman/workerman/Events/Ev.php',
+        'Workerman\\Events\\Event' => __DIR__ . '/..' . '/workerman/workerman/Events/Event.php',
+        'Workerman\\Events\\EventInterface' => __DIR__ . '/..' . '/workerman/workerman/Events/EventInterface.php',
+        'Workerman\\Events\\Libevent' => __DIR__ . '/..' . '/workerman/workerman/Events/Libevent.php',
+        'Workerman\\Events\\React\\Base' => __DIR__ . '/..' . '/workerman/workerman/Events/React/Base.php',
+        'Workerman\\Events\\React\\ExtEventLoop' => __DIR__ . '/..' . '/workerman/workerman/Events/React/ExtEventLoop.php',
+        'Workerman\\Events\\React\\ExtLibEventLoop' => __DIR__ . '/..' . '/workerman/workerman/Events/React/ExtLibEventLoop.php',
+        'Workerman\\Events\\React\\StreamSelectLoop' => __DIR__ . '/..' . '/workerman/workerman/Events/React/StreamSelectLoop.php',
+        'Workerman\\Events\\Select' => __DIR__ . '/..' . '/workerman/workerman/Events/Select.php',
+        'Workerman\\Events\\Swoole' => __DIR__ . '/..' . '/workerman/workerman/Events/Swoole.php',
+        'Workerman\\Lib\\Timer' => __DIR__ . '/..' . '/workerman/workerman/Lib/Timer.php',
+        'Workerman\\Protocols\\Frame' => __DIR__ . '/..' . '/workerman/workerman/Protocols/Frame.php',
+        'Workerman\\Protocols\\Http' => __DIR__ . '/..' . '/workerman/workerman/Protocols/Http.php',
+        'Workerman\\Protocols\\HttpCache' => __DIR__ . '/..' . '/workerman/workerman/Protocols/Http.php',
+        'Workerman\\Protocols\\ProtocolInterface' => __DIR__ . '/..' . '/workerman/workerman/Protocols/ProtocolInterface.php',
+        'Workerman\\Protocols\\Text' => __DIR__ . '/..' . '/workerman/workerman/Protocols/Text.php',
+        'Workerman\\Protocols\\Websocket' => __DIR__ . '/..' . '/workerman/workerman/Protocols/Websocket.php',
+        'Workerman\\Protocols\\Ws' => __DIR__ . '/..' . '/workerman/workerman/Protocols/Ws.php',
+        'Workerman\\WebServer' => __DIR__ . '/..' . '/workerman/workerman/WebServer.php',
+        'Workerman\\Worker' => __DIR__ . '/..' . '/workerman/workerman/Worker.php',
         'XdgBaseDir\\Xdg' => __DIR__ . '/..' . '/dnoegel/php-xdg-base-dir/src/Xdg.php',
         'Zend\\Diactoros\\AbstractSerializer' => __DIR__ . '/..' . '/zendframework/zend-diactoros/src/AbstractSerializer.php',
         'Zend\\Diactoros\\CallbackStream' => __DIR__ . '/..' . '/zendframework/zend-diactoros/src/CallbackStream.php',

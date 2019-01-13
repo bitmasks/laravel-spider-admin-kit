@@ -1009,6 +1009,51 @@
         "description": "Highlight PHP code in terminal"
     },
     {
+        "name": "kiddyu/beanbun",
+        "version": "1.0.4",
+        "version_normalized": "1.0.4.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/kiddyuchina/Beanbun.git",
+            "reference": "3b84c35de3470a3a2a44d47d201bdc3b7602e666"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/kiddyuchina/Beanbun/zipball/3b84c35de3470a3a2a44d47d201bdc3b7602e666",
+            "reference": "3b84c35de3470a3a2a44d47d201bdc3b7602e666",
+            "shasum": ""
+        },
+        "require": {
+            "guzzlehttp/guzzle": "^6.0",
+            "php": ">=5.5.0",
+            "workerman/workerman": "^3.3"
+        },
+        "time": "2017-06-11T17:13:59+00:00",
+        "type": "application",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Beanbun\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Kidd Yu",
+                "email": "58631254@qq.com"
+            }
+        ],
+        "description": "Beanbun 是用 PHP 编写的多进程网络爬虫框架，具有良好的开放性、高可扩展性",
+        "keywords": [
+            "crawler",
+            "scraper",
+            "spider"
+        ]
+    },
+    {
         "name": "laravel/framework",
         "version": "v5.7.20",
         "version_normalized": "5.7.20.0",
@@ -5156,6 +5201,54 @@
             "assert",
             "check",
             "validate"
+        ]
+    },
+    {
+        "name": "workerman/workerman",
+        "version": "v3.5.17",
+        "version_normalized": "3.5.17.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/walkor/Workerman.git",
+            "reference": "8b2be5101c9f4359b98d33e5cce0f2460add709d"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/walkor/Workerman/zipball/8b2be5101c9f4359b98d33e5cce0f2460add709d",
+            "reference": "8b2be5101c9f4359b98d33e5cce0f2460add709d",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3"
+        },
+        "suggest": {
+            "ext-event": "For better performance. "
+        },
+        "time": "2018-12-27T08:12:05+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Workerman\\": "./"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "walkor",
+                "email": "walkor@workerman.net",
+                "homepage": "http://www.workerman.net",
+                "role": "Developer"
+            }
+        ],
+        "description": "An asynchronous event driven PHP framework for easily building fast, scalable network applications.",
+        "homepage": "http://www.workerman.net",
+        "keywords": [
+            "asynchronous",
+            "event-loop"
         ]
     },
     {

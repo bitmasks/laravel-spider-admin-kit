@@ -5,14 +5,14 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use \Illuminate\Support\Facades\DB ;
+use \Illuminate\Support\Facades\DB;
 
 class IndexController extends Controller
 {
     public function index() {
         $admin = session('admin');
-        file_put_contents(storage_path('app/debug-admin-index-index.txt') , print_r($admin ,true)  );
-        $user_role = DB::table('admin_user_role')->where('admin_user_id',  asArray($admin)->id)->first();
+        file_put_contents(storage_path('app/debug-admin-index-index.txt'), print_r($admin, true));
+        $user_role = DB::table('admin_user_role')->where('admin_user_id', asArray($admin)->id)->first();
         $role_id = $user_role->role_id;
         $menu_list = DB::table('admin_role_menu as rm')
             ->leftJoin('admin_menu as m', 'm.id', '=', 'rm.menu_id')
